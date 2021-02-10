@@ -1,18 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/question.dart';
+
+import 'answer.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
+
+  void _answerQuestion() {
+    setState(() {
+      _questionIndex++;
+    });
+    print("Index $_questionIndex");
+  }
+
   @override
   Widget build(BuildContext context) {
+    const questions = const [
+      {
+        "questionText": "What\'s your favourite color",
+        "answers": [
+          "black",
+          "green",
+          "blue",
+          "white"
+        ],
+      },
+      {
+        "questionText": "What\'s your favourite animal",
+        "answers": [
+          "dog",
+          "cat",
+          "rabbit",
+          "cow"
+        ],
+      },
+      {
+        "questionText": "Who is your favourite instructor",
+        "answers": [
+          "Max",
+          "max",
+        ],
+      },
+    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("AppBar title"),
         ),
-        body: Text("Main body text"),
+        body: Column(
+          children: [
+            Question(questions[_questionIndex]["questionText"]),
+            ...(questions[_questionIndex]["answers"] as List<String>).map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
+          ],
+        ),
       ),
     );
   }
